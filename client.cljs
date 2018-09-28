@@ -16,8 +16,8 @@
 
 (defn prepend [x v] 
   (into (if (vector? x) x [x]) v))
-(prepend 1 [2 3 4 5])
-(prepend [1 2] [3 4 5])
+;(prepend 1 [2 3 4 5])
+;(prepend [1 2] [3 4 5])
 
 (defn append [x v]
   (into v (if (vector? x) x [x])))

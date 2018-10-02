@@ -4,10 +4,7 @@
 (defn get-width [n] (-> n Math/sqrt Math/ceil))
 (defn get-height [n] (-> n Math/sqrt Math/round))
 
-(defn create-n-vectors [n init]
-  (if (= n 0)
-    init
-    (recur (dec n) (conj init []))))
+(defn create-n-vectors [n] (vec (repeat n [])))
 
 (defn prepend [x v] 
   (into (if (vector? x) x [x]) v))
@@ -73,6 +70,7 @@
     newColor))
 
 (defn build-spiral
+  "the workhorse"
   [my-seq n isTransition isIncreasing startRow numWrite numTransition i spiral]
   (if (> i n)    
     (remove empty? (reverse spiral))
@@ -86,11 +84,11 @@
       (recur my-seq n (not isTransition) newIsIncreasing newStartRow newNumWrite newNumTransition newI newSpiral))))
 
 (defn generate-spiral
+  "A function that generates a spiral with the provided sequence"
   [my-seq n]
   (let [height (get-height n)
-        spiral (create-n-vectors height [])
+        spiral (create-n-vectors height)
         startRow (Math.floor (/ height 2))]
-    ;(print "starting spiral is" spiral)
     (reset! color "#008000")
     (build-spiral my-seq n false true startRow 2 0 1 spiral)))
 
@@ -144,21 +142,21 @@
    [:div "Number"
     [atom-input spiral-n]]
    [:div "Spiral: "
-      [:div (for 
-              [row (get-spiral (range) @spiral-n)] 
-              ^{:key row} [:div 
-                           {:style {:height "55px"}} 
-                           (for 
-                             [item row] 
-                             ^{:key item} [:div 
-                                           {:style 
-                                            {:margin "2px" 
-                                             :width "50px" 
-                                             :height "50px" 
-                                             :background-color (:color item) 
-                                             :float "left" :color "white" 
-                                             :text-align "center" 
-                                             :line-height "50px"}} (:val item)])])]]])
+    [:div (for 
+            [row (get-spiral (range) @spiral-n)] 
+            ^{:key row} [:div 
+                         {:style {:height "55px"}} 
+                         (for 
+                           [item row] 
+                           ^{:key item} [:div 
+                                         {:style 
+                                          {:margin "2px" 
+                                           :width "50px" 
+                                           :height "50px" 
+                                           :background-color (:color item) 
+                                           :float "left" :color "white" 
+                                           :text-align "center" 
+                                           :line-height "50px"}} (:val item)])])]]])
 
 (r/render-component [content]
   (.querySelector js/document "#app"))

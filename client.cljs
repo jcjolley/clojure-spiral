@@ -33,7 +33,6 @@
           newSpiral (transition-spiral isIncreasing val row spiral)]
       (recur isIncreasing newRow newValues newSpiral)))) 
 
-
 (defn write-spiral-row [isIncreasing rowNum val spiral]
   (if ((not nil?) val)
     (let [update-fn (if isIncreasing append prepend)
@@ -50,7 +49,6 @@
           newValues (rest values)
           newSpiral (write-spiral-row isIncreasing rowNum val spiral)]
       (recur isIncreasing rowNum newValues newSpiral))))
-
 
 (def color (r/atom "#008000"))
 (defn hexify-number [n]
@@ -135,7 +133,6 @@
            :value @value
            :on-change #(reset! value (-> % .-target .-value))}])
                           
-
 (defn get-spiral [my-seq n]
   (let [spiral (generate-spiral my-seq n)
         max-width (get-max-width spiral)
@@ -146,7 +143,6 @@
   [:div 
    [:div "Number"
     [atom-input spiral-n]]
-    
    [:div "Spiral: "
       [:div (for 
               [row (get-spiral (range) @spiral-n)] 
